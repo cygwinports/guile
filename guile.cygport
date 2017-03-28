@@ -1,5 +1,5 @@
 NAME="guile"
-VERSION=2.0.11
+VERSION=2.0.14
 RELEASE=1
 CATEGORY="Interpreters"
 SUMMARY="GNU Scheme interpreter library"
@@ -14,13 +14,29 @@ PATCH_URI="
 "
 
 PKG_NAMES="${NAME} libguile2.0_22 libguile2.0-devel"
-guile_CONTENTS="usr/bin/guild usr/bin/guile.exe usr/bin/guile-tools
-	usr/share/doc/ usr/share/info/ usr/share/man/"
-libguile2_0_22_CONTENTS="usr/bin/cygguile-2.0-22.dll usr/lib/guile/
-	usr/lib/*guilereadline* usr/share/guile/"
+guile_CONTENTS="
+	usr/bin/guild
+	usr/bin/guile.exe
+	usr/bin/guile-tools
+	usr/share/doc/
+	usr/share/info/
+	usr/share/man/man1/guile.1*
+"
+libguile2_0_22_CONTENTS="
+	usr/bin/cygguile-2.0-22.dll
+	usr/lib/guile/2.0/
+	usr/lib/*guilereadline-v-18*
+	usr/share/guile/2.0/
+"
 libguile2_0_devel_REQUIRES=${NAME}
-libguile2_0_devel_CONTENTS="usr/bin/guile-[cs]* usr/include/
-	usr/lib/libguile-2.0.* usr/lib/pkgconfig/ usr/share/aclocal/"
+libguile2_0_devel_CONTENTS="
+	usr/bin/guile-config
+	usr/bin/guile-snarf
+	usr/include/guile/2.0/
+	usr/lib/libguile-2.0.*
+	usr/lib/pkgconfig/guile-2.0.pc
+	usr/share/aclocal/guile-2.0.m4
+"
 
 DIFF_EXCLUDES="ref test-suite"
 
@@ -43,6 +59,11 @@ CYGCONF_ARGS="
 src_install() {
 	cd ${B}
 	cyginstall
+
+#	sed -i -e '1s|/bin/guile|&-2.0|' ${D}/usr/bin/guile-config-2.0
+
+	# avoid collisions
+	mv ${D}/usr/share/aclocal/guile{,-2.0}.m4
 
 	dodir /usr/share/gdb/auto-load/usr/bin
 	mv ${D}/usr/lib/libguile-2.0.dll.a-gdb.scm \
