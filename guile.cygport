@@ -29,6 +29,7 @@ libguile2_0_22_CONTENTS="
 	usr/share/guile/2.0/
 "
 libguile2_0_devel_REQUIRES=${NAME}
+libguile2_0_devel_OBSOLETES="guile-devel"
 libguile2_0_devel_CONTENTS="
 	usr/bin/guile-config
 	usr/bin/guile-snarf
